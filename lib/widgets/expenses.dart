@@ -1,3 +1,4 @@
+import 'package:expenses/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
 import 'expenses_list/expenses_list.dart';
@@ -28,10 +29,25 @@ class _ExpensesState extends State<Expenses> {
     ),
   ];
 
+  _openModalOverlay() {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) => NewExpense(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Expenses"),
+        actions: [
+          IconButton(
+            onPressed: _openModalOverlay,
+            icon: Icon(Icons.add),
+          )
+        ],
+      ),
       body: Column(
         children: [
           const Text("The chart"),
