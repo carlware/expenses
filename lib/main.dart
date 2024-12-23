@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(useMaterial3: true),
+    theme: ThemeData().copyWith(
+      scaffoldBackgroundColor: Color.fromRGBO(30, 30, 30, 1),
+    ),
     home: Expenses(),
   ));
 }
