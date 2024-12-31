@@ -1,5 +1,6 @@
 import 'package:expenses/widgets/chart/chart.dart';
 import 'package:expenses/widgets/new_expense.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'expenses_list/expenses_list.dart';
@@ -33,6 +34,7 @@ class _ExpensesState extends State<Expenses> {
   _openModalOverlay() {
     showModalBottomSheet(
       context: context,
+      useSafeArea: true,
       builder: (ctx) => NewExpense(
         onAddExpense: _onAddExpense,
       ),
@@ -69,6 +71,19 @@ class _ExpensesState extends State<Expenses> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    Widget mainContent = const Center(
+      child: Text('No expenses found. Start adding some!'),
+    );
+
+    if (_registeredExpenses.isNotEmpty) {
+      mainContent = ExpensesList(
+        expenses: _registeredExpenses,
+        onRemoveExpense: _removeExpense,
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Expenses"),
@@ -79,14 +94,20 @@ class _ExpensesState extends State<Expenses> {
           )
         ],
       ),
-      body: Column(
+      body: width < 600 ? Column(
         children: [
-          Chart(expenses: _registeredExpenses),
+            Chart(expenses: _registeredExpenses),
           Expanded(
-            child: ExpensesList(
-              expenses: _registeredExpenses,
-              onRemoveExpense: _removeExpense,
-            ),
+            child: mainContent,
+          ),
+        ],
+      ) : Row(
+        children: [
+          Expanded(
+            child: Chart(expenses: _registeredExpenses),
+          ),
+          Expanded(
+            child: mainContent,
           ),
         ],
       ),
